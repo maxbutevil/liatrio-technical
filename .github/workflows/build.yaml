@@ -4,6 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v7
     - run: docker build -t liatrio-technical .
     - run: docker run -d --rm -p 80:3000 --name liatrio-server liatrio-technical
     - name: run tests
