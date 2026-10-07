@@ -1,13 +1,43 @@
 name: Build & Test Docker Image
-on: ["push"]
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    
     - uses: actions/checkout@v7
-    - run: docker build -t liatrio-technical .
-    - run: docker run -d --rm -p 80:3000 --name liatrio-server liatrio-technical
-    - name: run tests
-      #uses: liatrio/github-actions/apprentice-action@master
+    
+    - name: Login to GHCR
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Build Image
+      uses: docker/build-push-action@v2
+      with:
+        load: true
+        tags: liatrio-technical
+    
+    - name: Start Image
+      run: docker run -d --rm -p 80:3000 --name liatrio-server liatrio-technical
+    - name: Run Tests
       uses: maxbutevil/liatrio-actions/apprentice-action@master
-    - run: docker stop liatrio-server
+    - name: Stop Image
+      run: docker stop liatrio-server
+    
+    - name: Create Docker Tag Identifier
+      id: tag
+      run: echo "::set-output name=id::$(git rev-parse --short HEAD)"
+    
+    - name: Push to GHCR
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:${{ steps.tag.outputs.id }}
+          
+      
+      
