@@ -26,7 +26,7 @@ jobs:
     - name: Start Image
       run: docker run -d --rm -p 80:3000 --name liatrio-server liatrio-technical
     - name: Run Tests
-      uses: maxbutevil/liatrio-actions/apprentice-action@master
+      uses: liatrio/github-actions/apprentice-action@0b41561cca6822cc8d880fe0e49e7807a41fdf91
     - name: Stop Image
       run: docker stop liatrio-server
     
