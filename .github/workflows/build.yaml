@@ -9,5 +9,5 @@ jobs:
     - run: docker run -d --rm -p 80:3000 --name liatrio-server liatrio-technical
     - name: run tests
       #uses: liatrio/github-actions/apprentice-action@master
-      uses: maxbutevil/liatrio-actions/apprentice-action
+      uses: maxbutevil/liatrio-actions/apprentice-action@master
     - run: docker stop liatrio-server
