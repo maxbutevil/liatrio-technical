@@ -1,0 +1,17 @@
+name: Deploy
+on:
+  workflow_run:
+    workflows: [Build & Test]
+jobs:
+  steps:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: appleboy/ssh-action
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          sudo docker pull ghcr.io/${{ github.repository }}:latest
+          sudo docker container stop liatrio-server
+          sudo docker run -d --rm -p 80:3000 --name liatrio-server ghcr.io/${{ github.repository }}:latest
