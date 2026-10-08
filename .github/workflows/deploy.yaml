@@ -1,7 +1,9 @@
 name: Deploy
 on:
   workflow_run:
-    workflows: [Build & Test]
+    workflows: ["Build & Test"]
+    types:
+    - completed
 jobs:
   steps:
     runs-on: ubuntu-latest
