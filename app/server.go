@@ -16,7 +16,7 @@ func main() {
 		response := fiber.Map{
 			"message":   "My name is Max van der Veen",
 			"timestamp": time.Now().UnixMilli(),
-			"version":   1,
+			"version":   2,
 		}
 
 		return c.JSON(response)
